@@ -1,0 +1,10 @@
+{
+    "packages": [
+        {
+            "spmUrl": "https://github.com/niscy-eudiw/SwiftCBOR.git",
+            "product": "SwiftCBOR",
+            "versionKind": "uptomaj",
+            "versionValue": "0.6.2"
+        }
+    ]
+}
