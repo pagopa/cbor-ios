@@ -1,0 +1,35 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '16.0'
+
+#install! 'cocoapods',
+  #generate_multiple_pod_projects: true,
+  #share_schemes_for_development_pods: true
+
+target 'CborCoseExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CborCoseExample
+
+  pod 'cbor', :git => 'git@github.com:pagopa/cbor-ios.git', :branch => 'develop'
+
+  target 'CborCoseExampleTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'CborCoseExampleUITests' do
+    # Pods for testing
+  end
+
+end
+
+
+def integrate_spm(project, config)
+  puts "Injecting SPM framework into Pods"
+    `swift run --package-path utils XcodeSPMI addRemotePackages --project-path Pods/Pods.xcodeproj --config-path #{config} --target-name #{project}`
+end
+
+post_integrate do |installer|
+  integrate_spm("cbor", "utils/config.json")
+end
