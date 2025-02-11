@@ -20,6 +20,48 @@ final class cborTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    func testJWKPublicCoseKey() {
+        let jwk1 = """
+{"kty":"EC",
+      "crv":"P-256",
+      "x":"f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+      "y":"x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+     }
+"""
+        
+        let jwk2 = """
+{"kty":"EC",
+          "crv":"P-256",
+          "x":"MKBCTNIcKUSDii11ySs3526iDZ8AiTo7Tu6KPAqv7D4",
+          "y":"4Etl6SRW2YiLUrN5vfvVHuhp7x8PxltmWWlbbM4IFyM"}
+"""
+        
+        let coseKey1 = CoseKey(jwk: jwk1)
+        let coseKey2 = CoseKey(jwk: jwk2)
+        
+        XCTAssert(coseKey1 != nil)
+        XCTAssert(coseKey2 != nil)
+        
+        let jwk11 = coseKey1?.toJWK()
+        
+        print(jwk11)
+    }
+    
+    
+//    func testCoseKeyPrivate() {
+//        let deviceKey = CoseKeyPrivate(
+//            publicKeyx963Data: Array<UInt8>().data,
+//            secureEnclaveKeyID: Array<UInt8>().data)
+//        
+//        let dataToSignString = "this is test data"
+//        
+//        let dataToSign = dataToSignString.data(using: .utf8)!
+//        
+//        let coseObject = try! Cose.makeCoseSign1(payloadData: dataToSign, deviceKey: deviceKey, alg: .es256)
+//        
+//        print(coseObject)
+//    }
+    
     func testCoseKeyPrivateNormalEncoding() {
         guard let deviceKey = CborCose.createSecurePrivateKey(curve: .p384, forceSecureEnclave: false) else {
             XCTFail("coseKey creation failed")
