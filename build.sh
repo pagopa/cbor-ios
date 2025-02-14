@@ -8,7 +8,7 @@ cd cbor
 xcodebuild archive \
     -scheme cbor \
     -destination "generic/platform=iOS Simulator" \
-    -archivePath "${{ github.workspace }}/archives/cbor-iOS-simulator.xcarchive" \
+    -archivePath "${GITHUB_WORKSPACE}/archives/cbor-iOS-simulator.xcarchive" \
     -configuration Release \
     -sdk iphonesimulator \
     ONLY_ACTIVE_ARCH=NO \
@@ -18,7 +18,7 @@ xcodebuild archive \
 # iOS Devices
 xcodebuild archive \
     -scheme cbor \
-    -archivePath "${{ github.workspace }}/archives/cbor-iOS.xcarchive" \
+    -archivePath "${GITHUB_WORKSPACE}/archives/cbor-iOS.xcarchive" \
     -destination "generic/platform=iOS" \
     -configuration Release \
     -sdk iphoneos \
@@ -28,6 +28,6 @@ xcodebuild archive \
 
 # Build cbor.xcframework
 xcodebuild -create-xcframework \
-    -framework "${{ github.workspace }}/archives/cbor-iOS.xcarchive/Products/Library/Frameworks/cbor.framework" \
-    -framework "${{ github.workspace }}/archives/cbor-iOS-simulator.xcarchive/Products/Library/Frameworks/cbor.framework" \
-    -output "${{ github.workspace }}/archives/cbor.xcframework"
+    -framework "${GITHUB_WORKSPACE}/archives/cbor-iOS.xcarchive/Products/Library/Frameworks/cbor.framework" \
+    -framework "${GITHUB_WORKSPACE}/archives/cbor-iOS-simulator.xcarchive/Products/Library/Frameworks/cbor.framework" \
+    -output "${GITHUB_WORKSPACE}/archives/cbor.xcframework"
