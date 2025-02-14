@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D283E3D2D5E37B400D51F98 /* CoseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D283E3C2D5E37B100D51F98 /* CoseKey.swift */; };
+		3D283E3F2D5E3B7A00D51F98 /* CoseKeyPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D283E3E2D5E3B7600D51F98 /* CoseKeyPrivate.swift */; };
 		3DC70ED12CFDC73500B32444 /* cbor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC70EC62CFDC73500B32444 /* cbor.framework */; };
 		3DC70EE52CFDC8E100B32444 /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 3DC70EE42CFDC8E100B32444 /* SwiftCBOR */; };
 		3DC70EEB2CFDC93600B32444 /* CborCose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EE82CFDC93600B32444 /* CborCose.swift */; };
@@ -14,15 +16,16 @@
 		3DC70EEF2CFDC93900B32444 /* cborTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EED2CFDC93900B32444 /* cborTests.swift */; };
 		3DC70EF22CFDC94300B32444 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF12CFDC94300B32444 /* Data+.swift */; };
 		3DC70EF42CFDC98D00B32444 /* CBOR+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF32CFDC98D00B32444 /* CBOR+.swift */; };
-		3DC70EF72CFDC9F200B32444 /* CoseKeyPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF62CFDC9F200B32444 /* CoseKeyPrivate.swift */; };
+		3DC70EF72CFDC9F200B32444 /* CoseKeyPrivateImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF62CFDC9F200B32444 /* CoseKeyPrivateImpl.swift */; };
 		3DC70EF92CFDCA1800B32444 /* ECCurveName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF82CFDCA1800B32444 /* ECCurveName.swift */; };
 		3DC70EFB2CFDCA2800B32444 /* ECCurveType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EFA2CFDCA2800B32444 /* ECCurveType.swift */; };
-		3DC70EFD2CFDCA4100B32444 /* CoseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EFC2CFDCA4100B32444 /* CoseKey.swift */; };
+		3DC70EFD2CFDCA4100B32444 /* CoseKeyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EFC2CFDCA4100B32444 /* CoseKeyImpl.swift */; };
 		3DC70EFF2CFDCA5A00B32444 /* CBORDecodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EFE2CFDCA5A00B32444 /* CBORDecodable+.swift */; };
 		3DC70F012CFDCA8900B32444 /* CBOREncodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70F002CFDCA8900B32444 /* CBOREncodable+.swift */; };
 		3DC70F032CFDCAE100B32444 /* Cose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70F022CFDCAE100B32444 /* Cose.swift */; };
 		3DC70F052CFDCBBB00B32444 /* CBOR.Tag+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70F042CFDCBBB00B32444 /* CBOR.Tag+.swift */; };
 		3DC70F072CFDCC2400B32444 /* OrderedDictionary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70F062CFDCC2400B32444 /* OrderedDictionary+.swift */; };
+		3DEBFD302D5B4A750034DB81 /* Array<UInt8>+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEBFD2F2D5B4A6E0034DB81 /* Array<UInt8>+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D283E3C2D5E37B100D51F98 /* CoseKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKey.swift; sourceTree = "<group>"; };
+		3D283E3E2D5E3B7600D51F98 /* CoseKeyPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKeyPrivate.swift; sourceTree = "<group>"; };
 		3DC70EC62CFDC73500B32444 /* cbor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = cbor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DC70ED02CFDC73500B32444 /* cborTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cborTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DC70EE62CFDC93600B32444 /* cbor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cbor.h; sourceTree = "<group>"; };
@@ -43,15 +48,16 @@
 		3DC70EED2CFDC93900B32444 /* cborTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cborTests.swift; sourceTree = "<group>"; };
 		3DC70EF12CFDC94300B32444 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		3DC70EF32CFDC98D00B32444 /* CBOR+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBOR+.swift"; sourceTree = "<group>"; };
-		3DC70EF62CFDC9F200B32444 /* CoseKeyPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKeyPrivate.swift; sourceTree = "<group>"; };
+		3DC70EF62CFDC9F200B32444 /* CoseKeyPrivateImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKeyPrivateImpl.swift; sourceTree = "<group>"; };
 		3DC70EF82CFDCA1800B32444 /* ECCurveName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCurveName.swift; sourceTree = "<group>"; };
 		3DC70EFA2CFDCA2800B32444 /* ECCurveType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCurveType.swift; sourceTree = "<group>"; };
-		3DC70EFC2CFDCA4100B32444 /* CoseKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKey.swift; sourceTree = "<group>"; };
+		3DC70EFC2CFDCA4100B32444 /* CoseKeyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKeyImpl.swift; sourceTree = "<group>"; };
 		3DC70EFE2CFDCA5A00B32444 /* CBORDecodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBORDecodable+.swift"; sourceTree = "<group>"; };
 		3DC70F002CFDCA8900B32444 /* CBOREncodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBOREncodable+.swift"; sourceTree = "<group>"; };
 		3DC70F022CFDCAE100B32444 /* Cose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cose.swift; sourceTree = "<group>"; };
 		3DC70F042CFDCBBB00B32444 /* CBOR.Tag+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBOR.Tag+.swift"; sourceTree = "<group>"; };
 		3DC70F062CFDCC2400B32444 /* OrderedDictionary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OrderedDictionary+.swift"; sourceTree = "<group>"; };
+		3DEBFD2F2D5B4A6E0034DB81 /* Array<UInt8>+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array<UInt8>+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,7 @@
 		3DC70EF02CFDC93C00B32444 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3DEBFD2F2D5B4A6E0034DB81 /* Array<UInt8>+.swift */,
 				3DC70F062CFDCC2400B32444 /* OrderedDictionary+.swift */,
 				3DC70F002CFDCA8900B32444 /* CBOREncodable+.swift */,
 				3DC70EFE2CFDCA5A00B32444 /* CBORDecodable+.swift */,
@@ -127,11 +134,13 @@
 		3DC70EF52CFDC9E200B32444 /* COSE */ = {
 			isa = PBXGroup;
 			children = (
+				3D283E3E2D5E3B7600D51F98 /* CoseKeyPrivate.swift */,
+				3D283E3C2D5E37B100D51F98 /* CoseKey.swift */,
 				3DC70F022CFDCAE100B32444 /* Cose.swift */,
-				3DC70EFC2CFDCA4100B32444 /* CoseKey.swift */,
+				3DC70EFC2CFDCA4100B32444 /* CoseKeyImpl.swift */,
 				3DC70EFA2CFDCA2800B32444 /* ECCurveType.swift */,
 				3DC70EF82CFDCA1800B32444 /* ECCurveName.swift */,
-				3DC70EF62CFDC9F200B32444 /* CoseKeyPrivate.swift */,
+				3DC70EF62CFDC9F200B32444 /* CoseKeyPrivateImpl.swift */,
 			);
 			path = COSE;
 			sourceTree = "<group>";
@@ -254,18 +263,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3DC70EF72CFDC9F200B32444 /* CoseKeyPrivate.swift in Sources */,
+				3DEBFD302D5B4A750034DB81 /* Array<UInt8>+.swift in Sources */,
+				3DC70EF72CFDC9F200B32444 /* CoseKeyPrivateImpl.swift in Sources */,
 				3DC70F052CFDCBBB00B32444 /* CBOR.Tag+.swift in Sources */,
 				3DC70EFF2CFDCA5A00B32444 /* CBORDecodable+.swift in Sources */,
 				3DC70EF42CFDC98D00B32444 /* CBOR+.swift in Sources */,
-				3DC70EFD2CFDCA4100B32444 /* CoseKey.swift in Sources */,
+				3DC70EFD2CFDCA4100B32444 /* CoseKeyImpl.swift in Sources */,
 				3DC70F012CFDCA8900B32444 /* CBOREncodable+.swift in Sources */,
 				3DC70EFB2CFDCA2800B32444 /* ECCurveType.swift in Sources */,
 				3DC70EF22CFDC94300B32444 /* Data+.swift in Sources */,
 				3DC70EF92CFDCA1800B32444 /* ECCurveName.swift in Sources */,
 				3DC70F072CFDCC2400B32444 /* OrderedDictionary+.swift in Sources */,
+				3D283E3D2D5E37B400D51F98 /* CoseKey.swift in Sources */,
 				3DC70EEB2CFDC93600B32444 /* CborCose.swift in Sources */,
 				3DC70F032CFDCAE100B32444 /* Cose.swift in Sources */,
+				3D283E3F2D5E3B7A00D51F98 /* CoseKeyPrivate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +400,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				EAGER_LINKING = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -407,6 +420,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = mh_dylib;
+				MERGED_BINARY_TYPE = automatic;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -454,6 +469,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EAGER_LINKING = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -467,6 +483,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = mh_dylib;
+				MERGED_BINARY_TYPE = automatic;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

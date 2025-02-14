@@ -2,79 +2,58 @@
 //  CoseKey.swift
 //  cbor
 //
-//  Created by Antonio on 02/12/24.
+//  Created by Antonio Caparello on 13/02/25.
 //
 
 
-
-import SwiftCBOR
-
-// Defined in RFC 8152
-public struct CoseKey: Equatable {
-    // Elliptic curve name
-    public let crv: ECCurveName
-    // Elliptic curve type
-    var kty: ECCurveType
-    // X coordinate of the public key
-    let x: [UInt8]
-    // Y coordinate of the public key
-    let y: [UInt8]
-}
-
-extension CoseKey: CBOREncodable {
-    // Converts the CoseKey to CBOR format
-    public func toCBOR(options: CBOROptions) -> CBOR {
-        let cbor: CBOR = [
-            -1: .unsignedInt(crv.rawValue), // Curve name identifier
-             1: .unsignedInt(kty.rawValue),  // Key type identifier
-             -2: .byteString(x),             // X coordinate as byte string
-             -3: .byteString(y)              // Y coordinate as byte string
-        ]
-        return cbor
+public class CoseKey {
+    
+    internal let coseKey: CoseKeyImpl
+    
+    private init(_ coseKey: CoseKeyImpl) {
+        self.coseKey = coseKey
     }
-}
-
-extension CoseKey: CBORDecodable {
-    // Initializes a CoseKey from a CBOR object
-    public init?(cbor obj: CBOR) {
-        guard
-            let calg = obj[-1], case let CBOR.unsignedInt(ralg) = calg, let alg = ECCurveName(rawValue: ralg),
-            let ckty = obj[1], case let CBOR.unsignedInt(rkty) = ckty, let keyType = ECCurveType(rawValue: rkty),
-            let cx = obj[-2], case let CBOR.byteString(rx) = cx,
-            let cy = obj[-3], case let CBOR.byteString(ry) = cy
-        else {
-            return nil // Return nil if any of the expected values are missing or incorrect
-        }
-        
-        crv = alg // Set curve name
-        kty = keyType // Set key type
-        x = rx // Set X coordinate
-        y = ry // Set Y coordinate
+    
+    public var crv: ECCurveName {
+        return coseKey.crv
     }
+    
+    public var kty: ECCurveType {
+        return coseKey.kty
+    }
+    
+    public var x: [UInt8] {
+        return coseKey.x
+    }
+    
+    public var y: [UInt8] {
+        return coseKey.y
+    }
+    
+    
 }
 
 extension CoseKey {
-    // Initializes a CoseKey from an elliptic curve name and an x9.63 representation
-    public init(crv: ECCurveName, x963Representation: Data) {
-        let keyData = x963Representation.dropFirst().bytes // Drop the first byte (0x04) which indicates uncompressed form
-        let count = keyData.count / 2 // Split the keyData into X and Y coordinates
-        self.init(x: Array(keyData[0..<count]), y: Array(keyData[count...]), crv: crv)
+    public convenience init(x: [UInt8], y: [UInt8], crv: ECCurveName = .p256) {
+        self.init(CoseKeyImpl(x: x, y: y, crv: crv))
     }
     
-    // Initializes a CoseKey from X and Y coordinates and a curve name (default is P-256)
-    public init(x: [UInt8], y: [UInt8], crv: ECCurveName = .p256) {
-        self.crv = crv // Set curve name
-        self.x = x // Set X coordinate
-        self.y = y // Set Y coordinate
-        self.kty = crv.keyType // Set key type based on the curve
+    public convenience init(crv: ECCurveName, x963Representation: Data) {
+        self.init(CoseKeyImpl(crv: crv, x963Representation: x963Representation))
     }
     
-    /// An ANSI x9.63 representation of the public key.
-    /// The representation includes a 0x04 prefix followed by the X and Y coordinates.
+    public convenience init?(jwk: String) {
+        guard let coseKey = CoseKeyImpl(jwk: jwk) else {
+            return nil
+        }
+        self.init(coseKey)
+    }
+    
     public func getx963Representation() -> Data {
-        var keyData = Data([0x04]) // Start with the prefix indicating uncompressed form
-        keyData.append(contentsOf: x) // Append X coordinate
-        keyData.append(contentsOf: y) // Append Y coordinate
-        return keyData
+        return coseKey.getx963Representation()
+    }
+    
+    public func toJWK() -> String? {
+        return coseKey.toJWK()
     }
 }

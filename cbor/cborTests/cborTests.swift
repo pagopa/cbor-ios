@@ -9,6 +9,7 @@ import XCTest
 import SwiftCBOR
 
 @testable import cbor
+import CryptoKit
 
 final class cborTests: XCTestCase {
     
@@ -19,6 +20,46 @@ final class cborTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func testJWKPublicCoseKey() {
+        let jwk1 = """
+{
+  "crv": "P-256",
+  "kty": "EC",
+  "x": "d2SM2WRV0lOKlMQJGcN76P+mAyau4vhVLlhgzAxyWp4=",
+  "y": "FiQJMW6agCMNC9i79ePkQqvtvsaOVaQwZkkcmbsQ/gQ="
+}
+"""
+        
+        let coseKey1 = CoseKey(jwk: jwk1)
+        
+        XCTAssert(coseKey1 != nil)
+       
+        let signingPubKey = try! P256.Signing.PublicKey(x963Representation: coseKey1!.getx963Representation())
+        
+        print(signingPubKey.derRepresentation.base64EncodedString())
+        
+        print(coseKey1?.getx963Representation())
+        
+        let jwk11 = coseKey1?.toJWK()
+        
+        print(jwk11)
+    }
+    
+    
+//    func testCoseKeyPrivate() {
+//        let deviceKey = CoseKeyPrivate(
+//            publicKeyx963Data: Array<UInt8>().data,
+//            secureEnclaveKeyID: Array<UInt8>().data)
+//        
+//        let dataToSignString = "this is test data"
+//        
+//        let dataToSign = dataToSignString.data(using: .utf8)!
+//        
+//        let coseObject = try! Cose.makeCoseSign1(payloadData: dataToSign, deviceKey: deviceKey, alg: .es256)
+//        
+//        print(coseObject)
+//    }
     
     func testCoseKeyPrivateNormalEncoding() {
         guard let deviceKey = CborCose.createSecurePrivateKey(curve: .p384, forceSecureEnclave: false) else {

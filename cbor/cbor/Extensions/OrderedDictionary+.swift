@@ -7,11 +7,11 @@
 
 
 
-import SwiftCBOR
-import OrderedCollections
+internal import SwiftCBOR
+internal import OrderedCollections
 
 extension OrderedDictionary where Key == CBOR {
-  public subscript<Index: RawRepresentable>(index: Index) -> Value? where Index.RawValue == Int {
+    subscript<Index: RawRepresentable>(index: Index) -> Value? where Index.RawValue == Int {
     self[CBOR(integerLiteral: index.rawValue)]
   }
 }
