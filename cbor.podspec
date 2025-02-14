@@ -18,7 +18,7 @@ Pod::Spec.new do |spec|
 
   spec.homepage     = "https://github.com/pagopa/cbor-ios"
 
-  spec.license      = { :type => "MIT", :file => "LICENSE" }
+  spec.license      = { :type => "MIT", :file => "../LICENSE" }
 
   spec.authors = [
     "acapadev",
