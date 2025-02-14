@@ -8,7 +8,7 @@
 
 
 import Foundation
-import SwiftCBOR
+internal import SwiftCBOR
 import CryptoKit
 
 extension Cose {
@@ -78,7 +78,7 @@ extension Cose {
       self.init(alg: alg, isNegativeAlg: nil, keyId: cborMap[Headers.keyId]?.asBytes(), rawHeader: cbor)
     }
     
-    public init?(alg: UInt64?, isNegativeAlg: Bool?, keyId: [UInt8]?, rawHeader : CBOR? = nil){
+    init?(alg: UInt64?, isNegativeAlg: Bool?, keyId: [UInt8]?, rawHeader : CBOR? = nil){
       guard alg != nil || rawHeader != nil else { return nil }
       self.algorithm = alg
       self.keyId = keyId
@@ -89,7 +89,7 @@ extension Cose {
 }
 
 /// Struct which describes  a representation for cryptographic keys;  how to create and process signatures, message authentication codes, and  encryption using Concise Binary Object Representation (CBOR) or serialization.
-public struct Cose {
+struct Cose {
   public let type: CoseType
   let protectedHeader : CoseHeader
   let unprotectedHeader : CoseHeader?
@@ -132,7 +132,7 @@ extension Cose {
   /// - Parameters:
   ///  - type: Cose message type
   ///  - cbor: CBOR representation of the cose message
-  public init?(type: CoseType, cbor: SwiftCBOR.CBOR) {
+  init?(type: CoseType, cbor: SwiftCBOR.CBOR) {
     guard let coseList = cbor.asList(), let protectedHeader = CoseHeader(fromBytestring: coseList[0]),
           let signature = coseList[3].asBytes() else { return nil }
     
@@ -151,7 +151,7 @@ extension Cose {
     self.type = type
   }
   ///initializer to create a payload cose message
-  public init(type: CoseType, algorithm: UInt64, payloadData: Data, unprotectedHeaderCbor: CBOR? = nil, signature: Data? = nil) {
+  init(type: CoseType, algorithm: UInt64, payloadData: Data, unprotectedHeaderCbor: CBOR? = nil, signature: Data? = nil) {
     self.protectedHeader = CoseHeader(alg: algorithm, isNegativeAlg: type == .sign1, keyId: nil)!
     self.unprotectedHeader = unprotectedHeaderCbor != nil ? CoseHeader(alg: nil, isNegativeAlg: nil, keyId: nil, rawHeader: unprotectedHeaderCbor!) : nil
     self.payload = .byteString(payloadData.bytes)

@@ -7,10 +7,10 @@
 
 
 
-import SwiftCBOR
+internal import SwiftCBOR
 
 // Defined in RFC 8152
-public struct CoseKey: Equatable {
+struct CoseKey: Equatable {
     // Elliptic curve name
     public let crv: ECCurveName
     // Elliptic curve type

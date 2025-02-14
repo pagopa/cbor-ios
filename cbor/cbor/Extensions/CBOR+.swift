@@ -7,13 +7,13 @@
 
 
 
-import SwiftCBOR
-import OrderedCollections
+internal import SwiftCBOR
+internal import OrderedCollections
 // Extension to add utility functions for unwrapping and converting CBOR values
 extension CBOR {
     
     // Function to unwrap the CBOR value and return its underlying data as a Swift type
-    public func unwrap() -> Any? {
+    func unwrap() -> Any? {
         switch self {
             case .simple(let value): return value
             case .boolean(let value): return value
@@ -33,26 +33,26 @@ extension CBOR {
     }
     
     // Function to attempt to unwrap the CBOR value as UInt64
-    public func asUInt64() -> UInt64? {
+    func asUInt64() -> UInt64? {
         return self.unwrap() as? UInt64
     }
     
     // Function to attempt to unwrap the CBOR value as a list of CBOR items (array)
-    public func asList() -> [CBOR]? {
+    func asList() -> [CBOR]? {
         return self.unwrap() as? [CBOR]
     }
     
     // Function to attempt to unwrap the CBOR value as an array of UInt8 (bytes)
-    public func asBytes() -> [UInt8]? {
+    func asBytes() -> [UInt8]? {
         return self.unwrap() as? [UInt8]
     }
     
     // Function to attempt to unwrap the CBOR value as a map (OrderedDictionary)
-    public func asMap() -> OrderedDictionary<CBOR, CBOR>? {
+    func asMap() -> OrderedDictionary<CBOR, CBOR>? {
         return self.unwrap() as? OrderedDictionary<CBOR, CBOR>
     }
     
-    public func toCose() -> (CBOR.Tag, [CBOR])? {
+    func toCose() -> (CBOR.Tag, [CBOR])? {
         guard let rawCose =  self.unwrap() as? (CBOR.Tag, CBOR),
               let cosePayload = rawCose.1.asList() else {
             return nil
@@ -62,7 +62,7 @@ extension CBOR {
     
     
     
-    public func decodeBytestring() -> CBOR? {
+    func decodeBytestring() -> CBOR? {
         guard let bytestring = self.asBytes(),
               let decoded = try? CBORDecoder(input: bytestring).decodeItem() else {
             return nil

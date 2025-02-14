@@ -7,10 +7,10 @@
 
 
 
-import SwiftCBOR
+internal import SwiftCBOR
 
 // Protocol for types that can be decoded from a CBOR object
-public protocol CBORDecodable {
+protocol CBORDecodable {
     init?(cbor: CBOR)
 }
 
@@ -19,7 +19,7 @@ extension CBORDecodable {
     
     // Initializer that decodes raw byte data into a CBOR object and then attempts to initialize the conforming type
     // - Parameter data: The raw CBOR byte data
-    public init?(data: [UInt8]) {
+    init?(data: [UInt8]) {
         guard let decodedObject = try? CBOR.decode(data) else {
             return nil
         }

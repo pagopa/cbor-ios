@@ -7,8 +7,8 @@
 
 
 
-import SwiftCBOR
-import OrderedCollections
+internal import SwiftCBOR
+internal import OrderedCollections
 import CryptoKit
 
 public class CborCose {
@@ -18,8 +18,8 @@ public class CborCose {
     //      - data: Data to sign
     //      - privateKey: CoseKeyPrivate instance representing the private key choosen to sign data
     //  - Returns: COSE-Sign1 structure with payload data included encoded as Data
-    public static func sign(data: Data, privateKey: CoseKeyPrivate) -> Data {
-        let cose = try! Cose.makeCoseSign1(payloadData: data, deviceKey: privateKey, alg: .es256)
+    public static func sign(data: Data, privateKey: CoseKeyPrivateRef) -> Data {
+        let cose = try! Cose.makeCoseSign1(payloadData: data, deviceKey: privateKey.coseKeyPrivate, alg: .es256)
         
         return Data(cose.encode(options: CBOROptions()))
     }
@@ -28,7 +28,7 @@ public class CborCose {
     //  - Parameters:
     //      - data: Encoded COSE-Sign1 structure to verify
     //      - publicKey: CoseKey instance representing the public key choosen to verify data
-    public static func verify(data: Data, publicKey: CoseKey) -> Bool {
+    public static func verify(data: Data, publicKey: CoseKeyRef) -> Bool {
         let coseCBOR = try? CBOR.decode(data.bytes)
         
         let cose = Cose.init(type: .sign1, cbor: coseCBOR!)!
@@ -41,7 +41,7 @@ public class CborCose {
     //      - curve: Elliptic Curve Name
     //      - forceSecureEnclave: A boolean indicating if secure enclave must be used
     //  - Returns: A CoseKeyPrivate object if creation succeeds
-    public static func createSecurePrivateKey(curve: ECCurveName = .p256, forceSecureEnclave: Bool = true) -> CoseKeyPrivate? {
+    public static func createSecurePrivateKey(curve: ECCurveName = .p256, forceSecureEnclave: Bool = true) -> CoseKeyPrivateRef? {
         if forceSecureEnclave {
             if !SecureEnclave.isAvailable {
                 //throw Error(description: "secureEnclaveNotSupported")
@@ -59,13 +59,13 @@ public class CborCose {
                 return nil
             }
             
-            return CoseKeyPrivate(
+            return CoseKeyPrivateRef(CoseKeyPrivate(
                 publicKeyx963Data: se256.publicKey.x963Representation,
-                secureEnclaveKeyID: se256.dataRepresentation)
+                secureEnclaveKeyID: se256.dataRepresentation))
         }
         
         //if force is disabled and secure enclave is not available use normal key generation
-        return CoseKeyPrivate(crv: curve)
+        return CoseKeyPrivateRef(CoseKeyPrivate(crv: curve))
     }
     
     //  Decode CBOR encoded data to json object string
