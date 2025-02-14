@@ -35,6 +35,7 @@ jobs:
       - name: Zip XCFramework
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
+          cp LICENSE archives/
           cd archives
           zip -r "cbor-${VERSION}.xcframework.zip" cbor.xcframework
 
