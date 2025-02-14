@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '16.0'
 
   spec.source                  = { :http => "https://github.com/pagopa/cbor-ios/releases/download/0.0.1/cbor-0.0.1.xcframework.zip" }
-  spec.ios.vendored_frameworks = "**/iOS/cbor.xcframework"
+  spec.ios.vendored_frameworks = "cbor.xcframework"
 
   spec.pod_target_xcconfig = { 
     'SWIFT_INCLUDE_PATHS' => '$(inherited) ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)',
