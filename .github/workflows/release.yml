@@ -35,9 +35,8 @@ jobs:
       - name: Zip XCFramework
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
-          cp LICENSE archives/
           cd archives
-          zip -r "cbor-${VERSION}.xcframework.zip" cbor.xcframework LICENSE
+          zip -r "cbor-${VERSION}.xcframework.zip" cbor.xcframework
 
       - name: Create GitHub Release
         id: create_release
