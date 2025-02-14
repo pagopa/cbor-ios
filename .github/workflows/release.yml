@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Xcode
-        run: xcode-select -s /Applications/Xcode.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 
       - name: Extract tag version
         id: get_version
