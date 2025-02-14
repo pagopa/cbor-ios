@@ -8,7 +8,7 @@ cd cbor
 xcodebuild archive \
     -scheme cbor \
     -destination "generic/platform=iOS Simulator" \
-    -archivePath "${GITHUB_WORKSPACE}/archives/cbor-iOS-simulator.xcarchive" \
+    -archivePath "${{ github.workspace }}/archives/cbor-iOS-simulator.xcarchive" \
     -configuration Release \
     -sdk iphonesimulator \
     ONLY_ACTIVE_ARCH=NO \
