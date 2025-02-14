@@ -18,7 +18,7 @@ jobs:
       - name: Extract tag version
         id: get_version
         run: |
-          # Estrae il tag rimuovendo "refs/tags/"
+          # Extract tag removing "refs/tags/"
           echo "version=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - name: Update podspec version
