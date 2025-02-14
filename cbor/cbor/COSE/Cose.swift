@@ -185,7 +185,7 @@ extension Cose {
   ///   - deviceKey: static device private key (encoded with ANSI x.963 or stored in SE)
   ///   - alg: The algorithm to sign with
   /// - Returns: a detached COSE-Sign1 structure with payload data included
-  public static func makeCoseSign1(payloadData: Data, deviceKey: CoseKeyPrivate, alg: Cose.VerifyAlgorithm) throws -> Cose {
+  public static func makeCoseSign1(payloadData: Data, deviceKey: CoseKeyPrivateImpl, alg: Cose.VerifyAlgorithm) throws -> Cose {
     let coseSign = try makeDetachedCoseSign1(payloadData: payloadData, deviceKey: deviceKey, alg: alg)
     
     return Cose(other: coseSign, payloadData: payloadData)
@@ -197,7 +197,7 @@ extension Cose {
   ///   - deviceKey: static device private key (encoded with ANSI x.963 or stored in SE)
   ///   - alg: The algorithm to sign with
   /// - Returns: a detached COSE-Sign1 structure
-  public static func makeDetachedCoseSign1(payloadData: Data, deviceKey: CoseKeyPrivate, alg: Cose.VerifyAlgorithm) throws-> Cose {
+  public static func makeDetachedCoseSign1(payloadData: Data, deviceKey: CoseKeyPrivateImpl, alg: Cose.VerifyAlgorithm) throws-> Cose {
     let coseIn = Cose(type: .sign1, algorithm: alg.rawValue, payloadData: payloadData)
     let dataToSign = coseIn.signatureStruct!
     let signature: Data
