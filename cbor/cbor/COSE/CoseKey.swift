@@ -78,3 +78,97 @@ extension CoseKey {
         return keyData
     }
 }
+
+extension CoseKey {
+
+    public func toJWK() -> String? {
+        let kty: String
+        let crv: String
+        let x: String
+        let y: String
+        
+        switch(self.kty)
+        {
+            case .EC2:
+                kty = "EC"
+            default:
+                //NOT SUPPORTED
+                return nil
+        }
+        
+        switch(self.crv) {
+            case .p256:
+                crv = "P-256"
+            case .p384:
+                crv = "P-384"
+            case .p521:
+                crv = "P-521"
+            
+        }
+        
+        x = self.x.data.base64UrlEncodedString()
+        y = self.y.data.base64UrlEncodedString()
+
+        let jwkObj = [
+            "x": x,
+            "y": y,
+            "crv": crv,
+            "kty": kty
+        ]
+
+        guard let jwkData = try? JSONSerialization.data(withJSONObject: jwkObj, options: []),
+              let jwk = String(data: jwkData, encoding: String.Encoding.utf8) else {
+            return nil
+        }
+        
+        return jwk
+    }
+
+    // Initializes a CoseKey from a JWK String
+    public init?(jwk: String) {
+        guard let jwkData = jwk.data(using: .utf8),
+              let jwkObj = try? JSONSerialization.jsonObject(with: jwkData) as? Dictionary<String, String> else {
+            return nil
+        }
+        
+        guard let x = jwkObj["x"],
+              let xData = Data(base64UrlEncoded: x)?.bytes,
+              let y = jwkObj["y"],
+              let yData = Data(base64UrlEncoded: y)?.bytes,
+              let crv = jwkObj["crv"],
+              let kty = jwkObj["kty"] else {
+            return nil
+        }
+        
+        let curveType: ECCurveType
+        
+        switch(kty) {
+            case "EC":
+                curveType = .EC2
+            default:
+                //NOT SUPPORTED
+                return nil
+        }
+        
+        let curveName: ECCurveName
+        
+        switch(crv) {
+            case "P-256":
+                curveName = .p256
+            case "P-384":
+                curveName = .p384
+            case "P-521":
+                curveName = .p521
+            default:
+                //NOT SUPPORTED
+                return nil
+        }
+        
+        self.crv = curveName // Set curve name
+        self.kty = curveType // Set key type
+        self.x = xData // Set X coordinate
+        self.y = yData // Set Y coordinate
+    }
+    
+    
+}
