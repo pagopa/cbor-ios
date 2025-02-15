@@ -25,7 +25,7 @@ jobs:
         run: |
           NEW_VERSION="${{ steps.get_version.outputs.version }}"
           echo "Updating podspec version to ${NEW_VERSION}"
-          sed -i '' "s/spec.version\s*=\s*\".*\"/spec.version      = \"${NEW_VERSION}\"/" cbor.podspec
+          sed -i '' "s/spec.version\s*=\s*\".*\"/spec.version      = \"${NEW_VERSION}\"/" IOWalletCBOR.podspec
 
       - name: Build XCFramework
         run: |
@@ -37,7 +37,7 @@ jobs:
           VERSION="${{ steps.get_version.outputs.version }}"
           cp LICENSE archives/
           cd archives
-          zip -r "cbor-${VERSION}.xcframework.zip" cbor.xcframework LICENSE
+          zip -r "IOWalletCBOR-${VERSION}.xcframework.zip" IOWalletCBOR.xcframework LICENSE
 
       - name: Create GitHub Release
         id: create_release
@@ -46,7 +46,7 @@ jobs:
           tag_name: ${{ github.ref }}
           name: Release ${{ steps.get_version.outputs.version }}
           body: |
-            Automated release for cbor version ${{ steps.get_version.outputs.version }}.
+            Automated release for IOWalletCBOR version ${{ steps.get_version.outputs.version }}.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -54,8 +54,8 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: archives/cbor-${{ steps.get_version.outputs.version }}.xcframework.zip
-          asset_name: cbor-${{ steps.get_version.outputs.version }}.xcframework.zip
+          asset_path: archives/IOWalletCBOR-${{ steps.get_version.outputs.version }}.xcframework.zip
+          asset_name: IOWalletCBOR-${{ steps.get_version.outputs.version }}.xcframework.zip
           asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,13 +2,13 @@
 # Remove the old /archives folder
 rm -rf archives
 
-cd cbor
+cd IOWalletCBOR
 
 # iOS Simulators
 xcodebuild archive \
-    -scheme cbor \
+    -scheme IOWalletCBOR \
     -destination "generic/platform=iOS Simulator" \
-    -archivePath "../archives/cbor-iOS-simulator.xcarchive" \
+    -archivePath "../archives/IOWalletCBOR-iOS-simulator.xcarchive" \
     -configuration Release \
     -sdk iphonesimulator \
     ONLY_ACTIVE_ARCH=NO \
@@ -17,8 +17,8 @@ xcodebuild archive \
 
 # iOS Devices
 xcodebuild archive \
-    -scheme cbor \
-    -archivePath "../archives/cbor-iOS.xcarchive" \
+    -scheme IOWalletCBOR \
+    -archivePath "../archives/IOWalletCBOR-iOS.xcarchive" \
     -destination "generic/platform=iOS" \
     -configuration Release \
     -sdk iphoneos \
@@ -28,6 +28,6 @@ xcodebuild archive \
     
 # Build cbor.xcframework
 xcodebuild -create-xcframework \
-    -framework "../archives/cbor-iOS.xcarchive/Products/Library/Frameworks/cbor.framework" \
-    -framework "../archives/cbor-iOS-simulator.xcarchive/Products/Library/Frameworks/cbor.framework" \
-    -output "../archives/cbor.xcframework"
+    -framework "../archives/IOWalletCBOR-iOS.xcarchive/Products/Library/Frameworks/IOWalletCBOR.framework" \
+    -framework "../archives/IOWalletCBOR-iOS-simulator.xcarchive/Products/Library/Frameworks/IOWalletCBOR.framework" \
+    -output "../archives/IOWalletCBOR.xcframework"

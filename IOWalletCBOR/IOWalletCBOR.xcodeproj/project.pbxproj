@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		3D283E3D2D5E37B400D51F98 /* CoseKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D283E3C2D5E37B100D51F98 /* CoseKey.swift */; };
 		3D283E3F2D5E3B7A00D51F98 /* CoseKeyPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D283E3E2D5E3B7600D51F98 /* CoseKeyPrivate.swift */; };
-		3DC70ED12CFDC73500B32444 /* cbor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC70EC62CFDC73500B32444 /* cbor.framework */; };
+		3DC70ED12CFDC73500B32444 /* IOWalletCBOR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC70EC62CFDC73500B32444 /* IOWalletCBOR.framework */; };
 		3DC70EE52CFDC8E100B32444 /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 3DC70EE42CFDC8E100B32444 /* SwiftCBOR */; };
 		3DC70EEB2CFDC93600B32444 /* CborCose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EE82CFDC93600B32444 /* CborCose.swift */; };
-		3DC70EEC2CFDC93600B32444 /* cbor.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DC70EE62CFDC93600B32444 /* cbor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3DC70EEC2CFDC93600B32444 /* IOWalletCBOR.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DC70EE62CFDC93600B32444 /* IOWalletCBOR.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3DC70EEF2CFDC93900B32444 /* cborTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EED2CFDC93900B32444 /* cborTests.swift */; };
 		3DC70EF22CFDC94300B32444 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF12CFDC94300B32444 /* Data+.swift */; };
 		3DC70EF42CFDC98D00B32444 /* CBOR+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC70EF32CFDC98D00B32444 /* CBOR+.swift */; };
@@ -41,9 +41,9 @@
 /* Begin PBXFileReference section */
 		3D283E3C2D5E37B100D51F98 /* CoseKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKey.swift; sourceTree = "<group>"; };
 		3D283E3E2D5E3B7600D51F98 /* CoseKeyPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoseKeyPrivate.swift; sourceTree = "<group>"; };
-		3DC70EC62CFDC73500B32444 /* cbor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = cbor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3DC70ED02CFDC73500B32444 /* cborTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cborTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3DC70EE62CFDC93600B32444 /* cbor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cbor.h; sourceTree = "<group>"; };
+		3DC70EC62CFDC73500B32444 /* IOWalletCBOR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IOWalletCBOR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DC70ED02CFDC73500B32444 /* IOWalletCBORTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IOWalletCBORTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DC70EE62CFDC93600B32444 /* IOWalletCBOR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOWalletCBOR.h; sourceTree = "<group>"; };
 		3DC70EE82CFDC93600B32444 /* CborCose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CborCose.swift; sourceTree = "<group>"; };
 		3DC70EED2CFDC93900B32444 /* cborTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cborTests.swift; sourceTree = "<group>"; };
 		3DC70EF12CFDC94300B32444 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3DC70ED12CFDC73500B32444 /* cbor.framework in Frameworks */,
+				3DC70ED12CFDC73500B32444 /* IOWalletCBOR.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,8 +83,8 @@
 		3DC70EBC2CFDC73500B32444 = {
 			isa = PBXGroup;
 			children = (
-				3DC70EE92CFDC93600B32444 /* cbor */,
-				3DC70EEE2CFDC93900B32444 /* cborTests */,
+				3DC70EE92CFDC93600B32444 /* IOWalletCBOR */,
+				3DC70EEE2CFDC93900B32444 /* IOWalletCBORTests */,
 				3DC70EC72CFDC73500B32444 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,29 +92,29 @@
 		3DC70EC72CFDC73500B32444 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3DC70EC62CFDC73500B32444 /* cbor.framework */,
-				3DC70ED02CFDC73500B32444 /* cborTests.xctest */,
+				3DC70EC62CFDC73500B32444 /* IOWalletCBOR.framework */,
+				3DC70ED02CFDC73500B32444 /* IOWalletCBORTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3DC70EE92CFDC93600B32444 /* cbor */ = {
+		3DC70EE92CFDC93600B32444 /* IOWalletCBOR */ = {
 			isa = PBXGroup;
 			children = (
 				3DC70EF52CFDC9E200B32444 /* COSE */,
 				3DC70EF02CFDC93C00B32444 /* Extensions */,
-				3DC70EE62CFDC93600B32444 /* cbor.h */,
+				3DC70EE62CFDC93600B32444 /* IOWalletCBOR.h */,
 				3DC70EE82CFDC93600B32444 /* CborCose.swift */,
 			);
-			path = cbor;
+			path = IOWalletCBOR;
 			sourceTree = "<group>";
 		};
-		3DC70EEE2CFDC93900B32444 /* cborTests */ = {
+		3DC70EEE2CFDC93900B32444 /* IOWalletCBORTests */ = {
 			isa = PBXGroup;
 			children = (
 				3DC70EED2CFDC93900B32444 /* cborTests.swift */,
 			);
-			path = cborTests;
+			path = IOWalletCBORTests;
 			sourceTree = "<group>";
 		};
 		3DC70EF02CFDC93C00B32444 /* Extensions */ = {
@@ -152,16 +152,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3DC70EEC2CFDC93600B32444 /* cbor.h in Headers */,
+				3DC70EEC2CFDC93600B32444 /* IOWalletCBOR.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		3DC70EC52CFDC73500B32444 /* cbor */ = {
+		3DC70EC52CFDC73500B32444 /* IOWalletCBOR */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3DC70ED92CFDC73500B32444 /* Build configuration list for PBXNativeTarget "cbor" */;
+			buildConfigurationList = 3DC70ED92CFDC73500B32444 /* Build configuration list for PBXNativeTarget "IOWalletCBOR" */;
 			buildPhases = (
 				3DC70EC12CFDC73500B32444 /* Headers */,
 				3DC70EC22CFDC73500B32444 /* Sources */,
@@ -172,17 +172,17 @@
 			);
 			dependencies = (
 			);
-			name = cbor;
+			name = IOWalletCBOR;
 			packageProductDependencies = (
 				3DC70EE42CFDC8E100B32444 /* SwiftCBOR */,
 			);
 			productName = cbor;
-			productReference = 3DC70EC62CFDC73500B32444 /* cbor.framework */;
+			productReference = 3DC70EC62CFDC73500B32444 /* IOWalletCBOR.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		3DC70ECF2CFDC73500B32444 /* cborTests */ = {
+		3DC70ECF2CFDC73500B32444 /* IOWalletCBORTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3DC70EDE2CFDC73500B32444 /* Build configuration list for PBXNativeTarget "cborTests" */;
+			buildConfigurationList = 3DC70EDE2CFDC73500B32444 /* Build configuration list for PBXNativeTarget "IOWalletCBORTests" */;
 			buildPhases = (
 				3DC70ECC2CFDC73500B32444 /* Sources */,
 				3DC70ECD2CFDC73500B32444 /* Frameworks */,
@@ -193,11 +193,11 @@
 			dependencies = (
 				3DC70ED32CFDC73500B32444 /* PBXTargetDependency */,
 			);
-			name = cborTests;
+			name = IOWalletCBORTests;
 			packageProductDependencies = (
 			);
 			productName = cborTests;
-			productReference = 3DC70ED02CFDC73500B32444 /* cborTests.xctest */;
+			productReference = 3DC70ED02CFDC73500B32444 /* IOWalletCBORTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -218,7 +218,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3DC70EC02CFDC73500B32444 /* Build configuration list for PBXProject "cbor" */;
+			buildConfigurationList = 3DC70EC02CFDC73500B32444 /* Build configuration list for PBXProject "IOWalletCBOR" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -235,8 +235,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3DC70EC52CFDC73500B32444 /* cbor */,
-				3DC70ECF2CFDC73500B32444 /* cborTests */,
+				3DC70EC52CFDC73500B32444 /* IOWalletCBOR */,
+				3DC70ECF2CFDC73500B32444 /* IOWalletCBORTests */,
 			);
 		};
 /* End PBXProject section */
@@ -294,7 +294,7 @@
 /* Begin PBXTargetDependency section */
 		3DC70ED32CFDC73500B32444 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3DC70EC52CFDC73500B32444 /* cbor */;
+			target = 3DC70EC52CFDC73500B32444 /* IOWalletCBOR */;
 			targetProxy = 3DC70ED22CFDC73500B32444 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -322,7 +322,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.cbor;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.io.wallet.cbor;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -354,7 +354,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.cbor;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.io.wallet.cbor;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -528,7 +528,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3DC70EC02CFDC73500B32444 /* Build configuration list for PBXProject "cbor" */ = {
+		3DC70EC02CFDC73500B32444 /* Build configuration list for PBXProject "IOWalletCBOR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3DC70EDC2CFDC73500B32444 /* Debug */,
@@ -537,7 +537,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3DC70ED92CFDC73500B32444 /* Build configuration list for PBXNativeTarget "cbor" */ = {
+		3DC70ED92CFDC73500B32444 /* Build configuration list for PBXNativeTarget "IOWalletCBOR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3DC70EDA2CFDC73500B32444 /* Debug */,
@@ -546,7 +546,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3DC70EDE2CFDC73500B32444 /* Build configuration list for PBXNativeTarget "cborTests" */ = {
+		3DC70EDE2CFDC73500B32444 /* Build configuration list for PBXNativeTarget "IOWalletCBORTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3DC70EDF2CFDC73500B32444 /* Debug */,
