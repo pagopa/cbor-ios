@@ -21,6 +21,66 @@ final class cborTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    private func generatePrivateKey(keyTag: String) throws -> SecKey? {
+        
+        var error: Unmanaged<CFError>?
+        
+        // Key ACL
+        guard let access = SecAccessControlCreateWithFlags(
+            kCFAllocatorDefault,
+//            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+            kSecAttrAccessibleAlways,
+            .privateKeyUsage, // signing and verification
+            &error
+        ) else {
+            throw error!.takeRetainedValue() as Error
+        }
+        
+        // Key Attributes
+        let attributes: NSMutableDictionary = [
+            kSecAttrKeyType: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrKeySizeInBits: 256,
+            kSecPrivateKeyAttrs: [
+                kSecAttrIsPermanent: false,
+                kSecAttrApplicationTag: keyTag.data(using: .utf8)!,
+                kSecAttrAccessControl: access
+            ]
+        ]
+        
+//        if keyConfig == .ec {
+//            attributes[kSecAttrTokenID] = kSecAttrTokenIDSecureEnclave
+//        }
+        
+        guard let key = SecKeyCreateRandomKey(attributes, &error) else {
+            throw error!.takeRetainedValue() as Error
+        }
+        return key
+    }
+    
+    
+    func testSignAndVerifySecKey() {
+        guard let secPrivateKey = try? generatePrivateKey(keyTag: "testSecKey") else {
+            XCTFail("secPrivateKey creation failed")
+            return
+        }
+        
+        guard let privateKey = CoseKeyPrivate(crv: .p256, secKey: secPrivateKey) else {
+            return
+        }
+        
+        guard let data = "helloworld".data(using: .utf8) else {
+            return
+        }
+        
+        let signed = CborCose.sign(data: data, privateKey: privateKey)
+        
+        let isValid = CborCose.verify(data: signed, publicKey: privateKey.key)
+        
+        XCTAssert(isValid == true)
+        
+    }
+    
+    
     func testSignAndVerifyWithJwk() {
         guard let privateKey = CborCose.createSecurePrivateKey(curve: .p256, forceSecureEnclave: false) else {
             XCTFail("privateKey creation failed")

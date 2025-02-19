@@ -26,6 +26,32 @@ extension CoseKeyPrivate {
     public convenience init(crv: ECCurveName) {
         self.init(CoseKeyPrivateImpl(crv: crv))
     }
+   
+    public convenience init?(crv: ECCurveName, keyTag: String) {
+        let getQuery: [String: Any] = [
+            kSecClass as String: kSecClassKey,
+            kSecAttrApplicationTag as String: keyTag,
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecReturnRef as String: true
+        ]
+        
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(getQuery as CFDictionary, &item)
+        
+        guard status == errSecSuccess else {
+            return nil
+        }
+        
+        self.init(crv: crv, secKey: (item as! SecKey))
+      
+    }
+    
+    public convenience init?(crv: ECCurveName, secKey: SecKey) {
+        guard let coseKeyPrivate = CoseKeyPrivateImpl(crv: crv, secKey: secKey) else {
+            return nil
+        }
+        self.init(coseKeyPrivate)
+    }
     
     public convenience init(publicKeyx963Data: Data, secureEnclaveKeyID: Data) {
         self.init(CoseKeyPrivateImpl(publicKeyx963Data: publicKeyx963Data, secureEnclaveKeyID: secureEnclaveKeyID))
