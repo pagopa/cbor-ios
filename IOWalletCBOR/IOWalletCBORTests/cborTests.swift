@@ -21,6 +21,91 @@ final class cborTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    private func generatePrivateKey(keyTag: String) throws -> SecKey? {
+        
+        var error: Unmanaged<CFError>?
+        
+        // Key ACL
+        guard let access = SecAccessControlCreateWithFlags(
+            kCFAllocatorDefault,
+//            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+            kSecAttrAccessibleAlways,
+            .privateKeyUsage, // signing and verification
+            &error
+        ) else {
+            throw error!.takeRetainedValue() as Error
+        }
+        
+        // Key Attributes
+        let attributes: NSMutableDictionary = [
+            kSecAttrKeyType: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrKeySizeInBits: 256,
+            kSecPrivateKeyAttrs: [
+                kSecAttrIsPermanent: false,
+                kSecAttrApplicationTag: keyTag.data(using: .utf8)!,
+                kSecAttrAccessControl: access
+            ]
+        ]
+        
+        
+        guard let key = SecKeyCreateRandomKey(attributes, &error) else {
+            throw error!.takeRetainedValue() as Error
+        }
+        return key
+    }
+    
+    
+    func testSignAndVerifySecKey() {
+        guard let secPrivateKey = try? generatePrivateKey(keyTag: "testSecKey") else {
+            XCTFail("secPrivateKey creation failed")
+            return
+        }
+        
+        guard let privateKey = CoseKeyPrivate(crv: .p256, secKey: secPrivateKey) else {
+            return
+        }
+        
+        guard let data = "helloworld".data(using: .utf8) else {
+            return
+        }
+        
+        let signed = CborCose.sign(data: data, privateKey: privateKey)
+        
+        let isValid = CborCose.verify(data: signed, publicKey: privateKey.key)
+        
+        XCTAssert(isValid == true)
+        
+    }
+    
+    func testVerifyAndroidLeadingZeroesJWK() {
+        
+        let androidPublicKeyJwk = """
+        {
+        "kty": "EC",
+        "crv": "P-256",
+        "y": "AO4+pA5yIuxHLJqJogiLT90o+gwZnND2qEQjEfMZ+Tta",
+        "x": "AP06ubTkmvo+U1HeiZ35xKHaox++EX6ViRkGnKHclVJB"
+        }
+        """
+        
+        let androidSignedDataStr = "hEOhASagU1RoaXMgaXMgYSB0ZXN0IGRhdGFYQDfXLpQpsSZyBJE+0AvBs27tuqIuNEeuRYQACPSLFGT9X18d8RrLkBS0f/AYKbFpW+zd6CmFQ8ry9xkZOT1lkbg="
+        
+        guard let androidSignedData = Data(base64Encoded: androidSignedDataStr) else {
+            XCTFail("androidSignedData decoding failed")
+            return
+        }
+        
+        guard let androidCoseKey = CoseKey(jwk: androidPublicKeyJwk) else {
+            XCTFail("androidCoseKeyJwk decoding failed")
+            return
+        }
+        
+        let isValid = CborCose.verify(data: androidSignedData, publicKey: androidCoseKey)
+        
+        XCTAssert(isValid == true)
+    }
+    
+    
     func testSignAndVerifyWithJwk() {
         guard let privateKey = CborCose.createSecurePrivateKey(curve: .p256, forceSecureEnclave: false) else {
             XCTFail("privateKey creation failed")

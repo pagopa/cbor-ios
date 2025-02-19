@@ -201,7 +201,10 @@ extension Cose {
     let coseIn = Cose(type: .sign1, algorithm: alg.rawValue, payloadData: payloadData)
     let dataToSign = coseIn.signatureStruct!
     let signature: Data
-    if let keyID = deviceKey.secureEnclaveKeyID {
+      if let secKey = deviceKey.secKey {
+          signature = try computeSignatureValueSecurity(dataToSign, deviceKey: secKey, alg: alg)
+      }
+    else if let keyID = deviceKey.secureEnclaveKeyID {
       let signingKey = try SecureEnclave.P256.Signing.PrivateKey(dataRepresentation: keyID)
       signature = (try! signingKey.signature(for: dataToSign)).rawRepresentation
     } else {
@@ -232,6 +235,41 @@ extension Cose {
     }
     return sign1Value
   }
+    
+    
+    public static func computeSignatureValueSecurity(_ dataToSign: Data, deviceKey: SecKey, alg: Cose.VerifyAlgorithm) throws -> Data {
+        
+        let signAlg: SecKeyAlgorithm
+        
+        switch(alg) {
+            case .es256:
+                signAlg = .ecdsaSignatureMessageX962SHA256
+            case .es384:
+                signAlg = .ecdsaSignatureMessageX962SHA384
+            case .es512:
+                signAlg = .ecdsaSignatureMessageX962SHA512
+        }
+                
+        
+        var error: Unmanaged<CFError>?
+        guard let signature = SecKeyCreateSignature(
+            deviceKey,
+            signAlg,
+            dataToSign as CFData,
+            &error
+        ) as Data? else {
+            throw error!.takeRetainedValue() as Error
+        }
+        
+        switch(alg) {
+            case .es256:
+                return try P256.Signing.ECDSASignature(derRepresentation: signature).rawRepresentation
+            case .es384:
+                return try P384.Signing.ECDSASignature(derRepresentation: signature).rawRepresentation
+            case .es512:
+                return try P521.Signing.ECDSASignature(derRepresentation: signature).rawRepresentation
+        }
+    }
   
   
   /// Validate (verify) a detached COSE-Sign1 structure according to https://datatracker.ietf.org/doc/html/rfc8152#section-4.4
