@@ -10,7 +10,7 @@ public class CoseKey {
     
     internal let coseKey: CoseKeyImpl
     
-    private init(_ coseKey: CoseKeyImpl) {
+    internal init(_ coseKey: CoseKeyImpl) {
         self.coseKey = coseKey
     }
     
@@ -55,5 +55,12 @@ extension CoseKey {
     
     public func toJWK() -> String? {
         return coseKey.toJWK()
+    }
+    
+    public convenience init?(data: [UInt8]) {
+        guard let coseKey = CoseKeyImpl(data: data) else {
+            return nil
+        }
+        self.init(coseKey)
     }
 }
