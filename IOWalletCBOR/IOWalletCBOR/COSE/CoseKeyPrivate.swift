@@ -57,5 +57,19 @@ extension CoseKeyPrivate {
         return self.coseKeyPrivate.base64Encoded(options: CBOROptions())
     }
     
+    public var key: CoseKey {
+        return CoseKey(self.coseKeyPrivate.key)
+    }
+    
+    public var secureEnclaveKeyID: Data? {
+        return self.coseKeyPrivate.secureEnclaveKeyID
+    }
+    
+    public func encode() -> [UInt8] {
+        return self.coseKeyPrivate.encode(options: CBOROptions())
+    }
+    
+    
+    
     
 }

@@ -6,9 +6,9 @@
 //
 
 import XCTest
-import SwiftCBOR
+internal import SwiftCBOR
 
-@testable import cbor
+@testable import IOWalletCBOR
 import CryptoKit
 
 final class cborTests: XCTestCase {
@@ -21,8 +21,63 @@ final class cborTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    func testSignAndVerifyWithJwk() {
+        guard let privateKey = CborCose.createSecurePrivateKey(curve: .p256, forceSecureEnclave: false) else {
+            XCTFail("privateKey creation failed")
+            return
+        }
+        
+        guard let data = "helloworld".data(using: .utf8) else {
+            return
+        }
+        
+        let signed = CborCose.sign(data: data, privateKey: privateKey)
+        
+        let isValid = CborCose.verify(data: signed, publicKey: privateKey.key)
+        
+        XCTAssert(isValid == true)
+        
+        guard let jwk = privateKey.key.toJWK() else {
+            XCTFail("public key jwk encoding failed")
+            return
+        }
+        
+        guard let publicKeyFromJwk = CoseKey(jwk: jwk) else {
+            XCTFail("public key jwk decoding failed")
+            return
+        }
+        
+        let isValid2 = CborCose.verify(data: signed, publicKey: publicKeyFromJwk)
+        
+        XCTAssert(isValid2 == true)
+        
+    }
+    
+    func testAndroidVerify() {
+        let androidPublicKeyStr = "BIVhg5qcO06jsqyuNS32bxjoIiUaIZhRuqdjmWD+X6PNxBzlUJV6m0smNE5wgclxdS62K5ReHUhI5RDmZn2aJvU="
+        
+        let androidSignedDataStr = "hEOhASZBoERDaWFvWEAslPFPzSVxkxRpcGiYfQf8AsV9xrt8vgGD2eT0Fe6TqryDmzWZgFcLDrYRMn4HcYbe6toVrMOHsBIU5SrKO8ep"
+        
+        guard let androidSignedData = Data(base64Encoded: androidSignedDataStr) else {
+            XCTFail("androidSignedData decoding failed")
+            return
+        }
+        
+        guard let androidPublicKey = Data(base64Encoded: androidPublicKeyStr) else {
+            XCTFail("androidPublicKey decoding failed")
+            return
+        }
+        
+        let androidCoseKey = CoseKey(crv: .p256, x963Representation: androidPublicKey)
+   
+        let isValid = CborCose.verify(data: androidSignedData, publicKey: androidCoseKey)
+        
+        XCTAssert(isValid == true)
+       
+    }
+    
     func testJWKPublicCoseKey() {
-        let jwk1 = """
+        let jwk = """
 {
   "crv": "P-256",
   "kty": "EC",
@@ -31,35 +86,16 @@ final class cborTests: XCTestCase {
 }
 """
         
-        let coseKey1 = CoseKey(jwk: jwk1)
+        guard let coseKey = CoseKey(jwk: jwk) else {
+            XCTFail("coseKey from jwk decoding failed")
+            return
+        }
         
-        XCTAssert(coseKey1 != nil)
-       
-        let signingPubKey = try! P256.Signing.PublicKey(x963Representation: coseKey1!.getx963Representation())
-        
-        print(signingPubKey.derRepresentation.base64EncodedString())
-        
-        print(coseKey1?.getx963Representation())
-        
-        let jwk11 = coseKey1?.toJWK()
-        
-        print(jwk11)
+        guard let coseKeyJwk = coseKey.toJWK() else {
+            XCTFail("coseKey to jwk encoding failed")
+            return
+        }
     }
-    
-    
-//    func testCoseKeyPrivate() {
-//        let deviceKey = CoseKeyPrivate(
-//            publicKeyx963Data: Array<UInt8>().data,
-//            secureEnclaveKeyID: Array<UInt8>().data)
-//        
-//        let dataToSignString = "this is test data"
-//        
-//        let dataToSign = dataToSignString.data(using: .utf8)!
-//        
-//        let coseObject = try! Cose.makeCoseSign1(payloadData: dataToSign, deviceKey: deviceKey, alg: .es256)
-//        
-//        print(coseObject)
-//    }
     
     func testCoseKeyPrivateNormalEncoding() {
         guard let deviceKey = CborCose.createSecurePrivateKey(curve: .p384, forceSecureEnclave: false) else {
@@ -67,7 +103,7 @@ final class cborTests: XCTestCase {
             return
         }
         
-        let encodedDeviceKey = deviceKey.encode(options: CBOROptions())
+        let encodedDeviceKey = deviceKey.encode()
         
         guard let decodedDeviceKey = CoseKeyPrivate(data: encodedDeviceKey) else {
             XCTFail("coseKey decoding failed")
@@ -101,7 +137,7 @@ final class cborTests: XCTestCase {
             return
         }
         
-        let encodedDeviceKey = deviceKey.encode(options: CBOROptions())
+        let encodedDeviceKey = deviceKey.encode()
         
         guard let decodedDeviceKey = CoseKeyPrivate(data: encodedDeviceKey) else {
             XCTFail("coseKey decoding failed")
@@ -143,23 +179,25 @@ final class cborTests: XCTestCase {
         
         guard let coseDecodedCbor = try? CBOR.decode(coseEncoded) else {
             XCTFail("cbor decoding failed")
-                        return
+            return
         }
         
         guard let coseDecoded = Cose(type: .sign1, cbor: coseDecodedCbor) else {
             XCTFail("cose init failed")
-                        return
+            return
         }
         
         guard let isValidSignature = try? coseDecoded.validateCoseSign1(publicKey_x963: publicKey.getx963Representation()) else {
             XCTFail("validateCoseSign1 failed with exception")
-                        return
+            return
         }
         
         XCTAssert(isValidSignature)
     }
     
     func testSignedData() {
+        
+        
         let payloadToVerify = "this is test data"
         
         let coseObjectBase64 = "hEOhASagUXRoaXMgaXMgdGVzdCBkYXRhWECWHFXxcZPkyupozacO5KTeBDcbXFYX6HaFynTZ85qXdtGGd9bhtgBq1vcjYdK0QHP+DmG15108cm497i83ScSf"
@@ -169,47 +207,47 @@ final class cborTests: XCTestCase {
         
         guard let validPublicKeyData = Data(base64Encoded: validPublicKey1Base64) else {
             XCTFail("base64 decoding failed")
-                        return
+            return
         }
         
         guard let notValidPublicKeyData = Data(base64Encoded: notValidPublicKey1Base64) else {
             XCTFail("base64 decoding failed")
-                        return
+            return
         }
         
         guard let coseDecodedData = Data(base64Encoded: coseObjectBase64) else {
             XCTFail("base64 decoding failed")
-                        return
+            return
         }
         
         guard let coseDecodedCbor = try? CBOR.decode(coseDecodedData.bytes) else {
             XCTFail("cbor decoding failed")
-                        return
+            return
         }
         
         guard let coseDecoded = Cose(type: .sign1, cbor: coseDecodedCbor) else {
             XCTFail("cose init failed")
-                        return
+            return
         }
         
         guard let validPublicKey = CoseKey(data: validPublicKeyData.bytes) else {
             XCTFail("CoseKey CBOR decoding failed")
-                        return
+            return
         }
         
         guard let notValidPublicKey = CoseKey(data: notValidPublicKeyData.bytes) else {
             XCTFail("CoseKey CBOR decoding failed")
-                        return
+            return
         }
         
         guard let isValidSignature = try? coseDecoded.validateCoseSign1(publicKey_x963: validPublicKey.getx963Representation()) else {
             XCTFail("validateCoseSign1 failed with exception")
-                        return
+            return
         }
         
         guard let isNotValidSignature = try? coseDecoded.validateCoseSign1(publicKey_x963: notValidPublicKey.getx963Representation()) else {
             XCTFail("validateCoseSign1 failed with exception")
-                        return
+            return
         }
         
         XCTAssert(isValidSignature)
@@ -217,12 +255,12 @@ final class cborTests: XCTestCase {
         
         guard let rawPayload = coseDecoded.payload.asBytes() else {
             XCTFail("cose payload not decodable")
-                        return
+            return
         }
         
         guard let stringPayload = String(data: Data(rawPayload), encoding: .utf8) else {
             XCTFail("cose payload not utf8 string")
-                        return
+            return
         }
         
         XCTAssert(stringPayload == payloadToVerify)
@@ -253,45 +291,47 @@ final class cborTests: XCTestCase {
     func testDecodeCBOR() {
         guard let jsonString = CborCose.decodeCBOR(data: Data(base64Encoded: cborTests.document1)!) else {
             XCTFail("fail to decode")
-                        return
+            return
         }
+        
+        print(jsonString)
         
         guard let jsonData = jsonString.data(using: .utf8),
               let json = try? JSONSerialization.jsonObject(with: jsonData) else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         guard let jsonMap = json as? Dictionary<String, AnyHashable> else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         guard let documents = jsonMap["documents"] as? Array<AnyHashable> else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         guard let documentMap = documents[0] as? Dictionary<String, AnyHashable> else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         guard let docType = documentMap["docType"] as? String else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         XCTAssertEqual(docType, "eu.europa.ec.eudi.pid.1")
         
         guard let issuerSigned = documentMap["issuerSigned"] as? Dictionary<String, AnyHashable> else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         guard let nameSpaces = issuerSigned["nameSpaces"] as? Dictionary<String, AnyHashable> else {
             XCTFail("fail to decode")
-                        return
+            return
         }
         
         guard let nameSpace = nameSpaces["eu.europa.ec.eudi.pid.1"] as? Array<AnyHashable> else {

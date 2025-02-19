@@ -19,7 +19,7 @@ public class CborCose {
     //      - privateKey: CoseKeyPrivate instance representing the private key choosen to sign data
     //  - Returns: COSE-Sign1 structure with payload data included encoded as Data
     public static func sign(data: Data, privateKey: CoseKeyPrivate) -> Data {
-        let cose = try! Cose.makeCoseSign1(payloadData: data, deviceKey: privateKey.coseKeyPrivate, alg: .es256)
+        let cose = try! Cose.makeCoseSign1(payloadData: data, deviceKey: privateKey, alg: .es256)
         
         return Data(cose.encode(options: CBOROptions()))
     }
@@ -156,9 +156,9 @@ public class CborCose {
     }
     
     private static func cborToJson(cborObject: CBOR?,
-                            isKey: Bool = false,
-                            isCBOR: Bool = false,
-                            properIssuerItem: Bool) -> AnyHashable? {
+                                   isKey: Bool = false,
+                                   isCBOR: Bool = false,
+                                   properIssuerItem: Bool) -> AnyHashable? {
         
         switch(cborObject) {
             case .map(let cborMap):
@@ -171,8 +171,20 @@ public class CborCose {
                     
                     cborMap.keys.forEach({
                         key in
-                        map[cborToJson(cborObject: key, isKey: true, properIssuerItem: properIssuerItem)] = cborToJson(cborObject: cborMap[key],
-                                                                                   isKey: isKey, properIssuerItem: properIssuerItem)
+                        
+                        let keyStr = cborToJson(cborObject: key, isKey: true, properIssuerItem: properIssuerItem) as? String
+                        
+                        if keyStr == "issuerAuth",
+                           let bytes = cborMap[key]?.encode() {
+                            
+                            map[keyStr] = Data(bytes).base64UrlEncodedString()
+                            return
+                            
+                        }
+                        
+                        map[keyStr] = cborToJson(cborObject: cborMap[key],
+                                                 isKey: isKey, properIssuerItem: properIssuerItem)
+                        
                     })
                 }
                 return map as AnyHashable
