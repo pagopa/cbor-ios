@@ -47,9 +47,6 @@ final class cborTests: XCTestCase {
             ]
         ]
         
-//        if keyConfig == .ec {
-//            attributes[kSecAttrTokenID] = kSecAttrTokenIDSecureEnclave
-//        }
         
         guard let key = SecKeyCreateRandomKey(attributes, &error) else {
             throw error!.takeRetainedValue() as Error

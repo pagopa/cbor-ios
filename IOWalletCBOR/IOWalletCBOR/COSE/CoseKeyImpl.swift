@@ -188,8 +188,6 @@ extension CoseKeyImpl {
         
         self.x = tempX// Set X coordinate
         self.y = tempY// Set Y coordinate
-//        self.x = xData[1..<xData.count].map({$0}) // Set X coordinate
-//        self.y = yData[1..<yData.count].map({$0}) // Set Y coordinate
     }
     
     
