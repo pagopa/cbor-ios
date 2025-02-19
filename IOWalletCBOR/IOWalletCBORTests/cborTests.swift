@@ -80,6 +80,34 @@ final class cborTests: XCTestCase {
         
     }
     
+    func testVerifyAndroidLeadingZeroesJWK() {
+        
+        let androidPublicKeyJwk = """
+        {
+        "kty": "EC",
+        "crv": "P-256",
+        "y": "AO4+pA5yIuxHLJqJogiLT90o+gwZnND2qEQjEfMZ+Tta",
+        "x": "AP06ubTkmvo+U1HeiZ35xKHaox++EX6ViRkGnKHclVJB"
+        }
+        """
+        
+        let androidSignedDataStr = "hEOhASagU1RoaXMgaXMgYSB0ZXN0IGRhdGFYQDfXLpQpsSZyBJE+0AvBs27tuqIuNEeuRYQACPSLFGT9X18d8RrLkBS0f/AYKbFpW+zd6CmFQ8ry9xkZOT1lkbg="
+        
+        guard let androidSignedData = Data(base64Encoded: androidSignedDataStr) else {
+            XCTFail("androidSignedData decoding failed")
+            return
+        }
+        
+        guard let androidCoseKey = CoseKey(jwk: androidPublicKeyJwk) else {
+            XCTFail("androidCoseKeyJwk decoding failed")
+            return
+        }
+        
+        let isValid = CborCose.verify(data: androidSignedData, publicKey: androidCoseKey)
+        
+        XCTAssert(isValid == true)
+    }
+    
     
     func testSignAndVerifyWithJwk() {
         guard let privateKey = CborCose.createSecurePrivateKey(curve: .p256, forceSecureEnclave: false) else {
