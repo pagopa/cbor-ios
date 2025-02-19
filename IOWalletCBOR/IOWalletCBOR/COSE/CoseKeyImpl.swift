@@ -79,6 +79,7 @@ extension CoseKeyImpl {
     }
 }
 
+
 extension CoseKeyImpl {
 
     public func toJWK() -> String? {
@@ -166,8 +167,27 @@ extension CoseKeyImpl {
         
         self.crv = curveName // Set curve name
         self.kty = curveType // Set key type
-        self.x = xData // Set X coordinate
-        self.y = yData // Set Y coordinate
+        
+        var tempX = xData
+        var tempY = yData
+        
+        
+        if (tempX.count % 2 != 0) {
+            if (tempX[0] == 0) {
+                tempX = tempX[1..<tempX.count].map({$0})
+            }
+        }
+        
+        if (tempY.count % 2 != 0) {
+            if (tempY[0] == 0) {
+                tempY = tempY[1..<tempY.count].map({$0})
+            }
+        }
+        
+        
+        
+        self.x = tempX// Set X coordinate
+        self.y = tempY// Set Y coordinate
     }
     
     
