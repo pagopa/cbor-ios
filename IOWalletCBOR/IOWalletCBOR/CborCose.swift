@@ -87,9 +87,15 @@ public class CborCose {
         
         if documents {
             
-            let documents = ["documents": [jsonObject]]
+            var docs = jsonObject
             
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: documents, options: []) else {
+            if let map = jsonObject as? [AnyHashable?: AnyHashable?] {
+                if (!map.keys.contains(where: {$0 as? String == "documents"})) {
+                    docs = ["documents": [docs]]
+                }
+            }
+            
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: docs, options: []) else {
                 return nil
             }
             
@@ -174,7 +180,7 @@ public class CborCose {
                         
                         let keyStr = cborToJson(cborObject: key, isKey: true, properIssuerItem: properIssuerItem) as? String
                         
-                        if keyStr == "issuerAuth",
+                        if keyStr == "issuerAuth" || keyStr == "deviceSignature",
                            let bytes = cborMap[key]?.encode() {
                             
                             map[keyStr] = Data(bytes).base64UrlEncodedString()
