@@ -10,10 +10,7 @@ xcodebuild archive \
     -destination "generic/platform=iOS Simulator" \
     -archivePath "../archives/IOWalletCBOR-iOS-simulator.xcarchive" \
     -configuration Release \
-    -sdk iphonesimulator \
-    ONLY_ACTIVE_ARCH=NO \
-    SKIP_INSTALL=NO \
-    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+    -sdk iphonesimulator
 
 # iOS Devices
 xcodebuild archive \
@@ -21,10 +18,7 @@ xcodebuild archive \
     -archivePath "../archives/IOWalletCBOR-iOS.xcarchive" \
     -destination "generic/platform=iOS" \
     -configuration Release \
-    -sdk iphoneos \
-    ONLY_ACTIVE_ARCH=NO \
-    SKIP_INSTALL=NO \
-    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+    -sdk iphoneos
     
 # Build cbor.xcframework
 xcodebuild -create-xcframework \
