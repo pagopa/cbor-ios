@@ -7,8 +7,8 @@
 
 
 import SwiftUI
-import SwiftCBOR
-import cbor
+//import SwiftCBOR
+import IOWalletCBOR
 
 struct CborDecodeView : View {
     @State var data: String = ""

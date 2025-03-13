@@ -8,8 +8,8 @@
 
 
 import SwiftUI
-import SwiftCBOR
-import cbor
+//import SwiftCBOR
+import IOWalletCBOR
 
 struct Cose1SignView : View {
     @State var privateKey: String = ""

@@ -1,22 +1,3 @@
-PODS:
-  - cbor (0.0.1)
-
-DEPENDENCIES:
-  - cbor (from `file:////Users/username/repos/digitouch/pagopa/cbor-ios/.git`, branch `develop`)
-
-EXTERNAL SOURCES:
-  cbor:
-    :branch: develop
-    :git: file:////Users/username/repos/digitouch/pagopa/cbor-ios/.git
-
-CHECKOUT OPTIONS:
-  cbor:
-    :commit: f8de9db07beee94b4e75252da18aa19d22441155
-    :git: file:////Users/username/repos/digitouch/pagopa/cbor-ios/.git
-
-SPEC CHECKSUMS:
-  cbor: efdf90a522202f7abd156a915af217ebd725e823
-
-PODFILE CHECKSUM: aa9635a2d2036cb43cb8709360b66e098c90e6c5
+PODFILE CHECKSUM: 9c8636b9797372e13f82cdeae061875c58fa6083
 
 COCOAPODS: 1.16.2

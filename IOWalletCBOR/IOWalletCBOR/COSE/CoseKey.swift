@@ -5,6 +5,7 @@
 //  Created by Antonio Caparello on 13/02/25.
 //
 
+import Foundation
 
 public class CoseKey {
     

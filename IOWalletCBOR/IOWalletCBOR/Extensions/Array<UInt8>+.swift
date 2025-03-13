@@ -4,6 +4,7 @@
 //
 //  Created by Antonio on 11/02/25.
 //
+import Foundation
 
 extension Array<UInt8> {
     

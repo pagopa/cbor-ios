@@ -88,6 +88,21 @@ final class cborTests: XCTestCase {
             return
         }
         
+        guard let issuerSigned = documentMap["issuerSigned"] as? Dictionary<String, AnyHashable> else {
+            XCTFail("fail to decode")
+            return
+        }
+        
+        guard let issuerAuth = issuerSigned["issuerAuth"] as? Dictionary<String, AnyHashable> else {
+            XCTFail("fail to decode")
+            return
+        }
+        
+        guard let rawValue = issuerAuth["rawValue"] as? String else {
+            XCTFail("fail to decode")
+            return
+        }
+        
     }
     
     func testSignAndVerifySecKey() {

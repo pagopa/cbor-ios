@@ -7,6 +7,7 @@
 
 internal import SwiftCBOR
 
+import Foundation
 
 public class CoseKeyPrivate {
     

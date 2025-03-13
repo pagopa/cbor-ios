@@ -10,6 +10,7 @@
 internal import SwiftCBOR
 internal import OrderedCollections
 import CryptoKit
+import Foundation
 
 public class CborCose {
     
@@ -67,6 +68,25 @@ public class CborCose {
         //if force is disabled and secure enclave is not available use normal key generation
         return CoseKeyPrivate(CoseKeyPrivateImpl(crv: curve))
     }
+    
+    //  Decode CBOR encoded documents (or document) to json object string
+    //  - Parameters:
+    //      - data: CBOR encoded data to decode
+    //  - Returns: String encoded json object
+    public static func documentsCborToJson(data: Data) -> String? {
+        return decodeCBOR(data: data, true, true, true)
+    }
+    
+    
+    //  Decode CBOR encoded issuerSigned to json object string
+    //  - Parameters:
+    //      - data: CBOR encoded data to decode
+    //  - Returns: String encoded json object
+    public static func issuerSignedCborToJson(data: Data) -> String? {
+        return decodeCBOR(data: data, false, true, true)
+    }
+    
+    
     
     //  Decode CBOR encoded data to json object string
     //  - Parameters:

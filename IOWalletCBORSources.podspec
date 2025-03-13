@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
 
-  spec.name         = "IOWalletCBOR"
+  spec.name         = "IOWalletCBORSources"
   spec.version      = "0.0.4"
   spec.summary      = "The library offers functions to handle objects in CBOR format and manages COSE signing and verification"
 
@@ -27,8 +27,11 @@ Pod::Spec.new do |spec|
 
   spec.ios.deployment_target = '13.0'
 
-  spec.source                  = { :http => "https://github.com/pagopa/cbor-ios/releases/download/" + spec.version.to_s + "/IOWalletCBOR-"  + spec.version.to_s +  ".xcframework.zip" }
-  spec.ios.vendored_frameworks = "IOWalletCBOR.xcframework"
+  spec.source      = { :git => 'https://github.com/pagopa/cbor-ios.git', tag: spec.version }
+
+  spec.prepare_command = './.build.sh'
+
+  spec.ios.vendored_frameworks = ".archives/IOWalletCBOR.xcframework"
 
   spec.pod_target_xcconfig = { 
     'SWIFT_INCLUDE_PATHS' => '$(inherited) ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)',
