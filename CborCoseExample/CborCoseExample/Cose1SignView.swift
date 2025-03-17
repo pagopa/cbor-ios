@@ -8,7 +8,6 @@
 
 
 import SwiftUI
-//import SwiftCBOR
 import IOWalletCBOR
 
 struct Cose1SignView : View {
