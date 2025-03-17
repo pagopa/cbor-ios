@@ -58,6 +58,31 @@ let verified = CborCose.verify(data: signedPayload, publicKey: publicKey)
 print(verified)
 ```
 
+
+#### CborCose.issuerSignedCborToJson
+
+```swift    
+//  Decode CBOR encoded issuerSigned to json object string
+//  - Parameters:
+//      - data: CBOR encoded data to decode
+//  - Returns: String encoded json object
+
+let jsonString = CborCose.issuerSignedCborToJson(data: data)
+print(jsonString)
+```
+
+#### CborCose.documentsCborToJson
+
+```swift
+//  Decode CBOR encoded documents (or document) to json object string
+//  - Parameters:
+//      - data: CBOR encoded data to decode
+//  - Returns: String encoded json object
+
+let jsonString = CborCose.documentsCborToJson(data: data)
+print(jsonString)
+```
+
 #### CborCose.decodeCBOR
 
 ```swift
