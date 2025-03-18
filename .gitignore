@@ -73,4 +73,5 @@ fastlane/test_output
 
 sonar-reports/
 
-archives
+.archives
+.spm.pods

@@ -9,6 +9,8 @@
 
 internal import SwiftCBOR
 
+import Foundation
+
 // Defined in RFC 8152
 struct CoseKeyImpl: Equatable {
     // Elliptic curve name
@@ -82,7 +84,7 @@ extension CoseKeyImpl {
 
 extension CoseKeyImpl {
 
-    public func toJWK() -> String? {
+    internal func toJWKObj() -> [String: String]? {
         let kty: String
         let crv: String
         let x: String
@@ -104,20 +106,25 @@ extension CoseKeyImpl {
                 crv = "P-384"
             case .p521:
                 crv = "P-521"
-            
+                
         }
         
         x = self.x.data.base64UrlEncodedString()
         y = self.y.data.base64UrlEncodedString()
-
+        
         let jwkObj = [
             "x": x,
             "y": y,
             "crv": crv,
             "kty": kty
         ]
-
-        guard let jwkData = try? JSONSerialization.data(withJSONObject: jwkObj, options: []),
+        
+        return jwkObj
+    }
+    
+    public func toJWK() -> String? {
+        guard let jwkObj = toJWKObj(),
+            let jwkData = try? JSONSerialization.data(withJSONObject: jwkObj, options: []),
               let jwk = String(data: jwkData, encoding: String.Encoding.utf8) else {
             return nil
         }

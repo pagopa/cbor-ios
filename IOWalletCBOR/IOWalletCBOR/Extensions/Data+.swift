@@ -5,7 +5,7 @@
 //  Created by Antonio on 02/12/24.
 //
 
-
+import Foundation
 
 extension Data {
     
