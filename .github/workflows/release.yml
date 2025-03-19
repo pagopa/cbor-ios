@@ -36,8 +36,8 @@ jobs:
       - name: Zip XCFramework
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
-          cp LICENSE archives/
-          cd archives
+          cp LICENSE .archives/
+          cd .archives
           zip -r "IOWalletCBOR-${VERSION}.xcframework.zip" IOWalletCBOR.xcframework LICENSE
 
       - name: Create GitHub Release
@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: archives/IOWalletCBOR-${{ steps.get_version.outputs.version }}.xcframework.zip
+          asset_path: .archives/IOWalletCBOR-${{ steps.get_version.outputs.version }}.xcframework.zip
           asset_name: IOWalletCBOR-${{ steps.get_version.outputs.version }}.xcframework.zip
           asset_content_type: application/zip
         env:
