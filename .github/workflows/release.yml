@@ -3,7 +3,7 @@ name: Build and Release cbor
 on:
   push:
     tags:
-      - '*.*.*'  # Trigger for every tag x.y.z
+      - "*.*.*" # Trigger for every tag x.y.z
 
 jobs:
   build-release:
@@ -30,8 +30,8 @@ jobs:
 
       - name: Build XCFramework
         run: |
-          chmod +x ./build.sh
-          ./build.sh
+          chmod +x ./.build.sh
+          ./.build.sh
 
       - name: Zip XCFramework
         run: |
