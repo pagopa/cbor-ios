@@ -334,6 +334,9 @@ final class cborTests: XCTestCase {
             XCTFail("fail to decode")
             return
         }
+        
+        
+        
 
         print(json)
 
@@ -648,24 +651,39 @@ final class cborTests: XCTestCase {
 
         nameSpace.forEach({
             item in
-
+            
             if let element = item as? [String: AnyHashable] {
-                if let birth_date = element["birth_date"] as? String {
+                if element["elementIdentifier"] as? String == "birth_date",
+                   let birth_date = element["elementValue"] as? String {
                     XCTAssertEqual(birth_date, "2001-09-11")
-                } else if let family_name = element["family_name"] as? String {
+                }
+                else if element["elementIdentifier"] as? String == "family_name",
+                        let family_name = element["elementValue"] as? String {
                     XCTAssertEqual(family_name, "Doe")
-                } else if let expiry_date = element["expiry_date"] as? String {
+                }
+                else if element["elementIdentifier"] as? String == "expiry_date",
+                        let expiry_date = element["elementValue"] as? String {
                     XCTAssertEqual(expiry_date, "2025-01-09")
-                } else if let issuing_authority = element["issuing_authority"] as? String {
+                }
+                else if element["elementIdentifier"] as? String == "issuing_authority",
+                        let issuing_authority = element["elementValue"] as? String {
                     XCTAssertEqual(issuing_authority, "Test PID issuer")
-                } else if let issuing_country = element["issuing_country"] as? String {
+                }
+                else if element["elementIdentifier"] as? String == "issuing_country",
+                        let issuing_country = element["elementValue"] as? String {
                     XCTAssertEqual(issuing_country, "FC")
-                } else if let issuance_date = element["issuance_date"] as? String {
+                }
+                else if element["elementIdentifier"] as? String == "issuance_date",
+                        let issuance_date = element["elementValue"] as? String {
                     XCTAssertEqual(issuance_date, "2024-10-11")
-                } else if let given_name = element["given_name"] as? String {
+                }
+                else if element["elementIdentifier"] as? String == "given_name",
+                        let given_name = element["elementValue"] as? String {
                     XCTAssertEqual(given_name, "John")
-                } else if let age_over_18 = element["age_over_18"] as? String {
-                    XCTAssertEqual(age_over_18, "true")
+                }
+                else if element["elementIdentifier"] as? String == "age_over_18",
+                        let age_over_18 = element["elementValue"] as? Bool {
+                    XCTAssertEqual(age_over_18, true)
                 } else {
                     print("not testable \(element)")
                 }
