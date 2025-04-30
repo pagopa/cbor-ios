@@ -301,6 +301,8 @@ public class CborCose {
                     return "\(realValue)"
                 }
                 return (realValue)
+            case .boolean(let value):
+                return value
             default:
                 if isKey {
                     return "\(cborObject!.unwrap()!)"
