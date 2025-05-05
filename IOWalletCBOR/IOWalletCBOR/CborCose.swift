@@ -190,9 +190,23 @@ public class CborCose {
                 "unprotectedHeader":
                     issuerAuthCose.unprotectedHeader?.rawHeader?.asMap()?.map({
                         keyPair in
+                        
+                        let keyStr: String
+                        
+                        if let key = keyPair.key.asUInt64(),
+                           let header = Cose.CoseHeader.Headers(rawValue: Int(key)) {
+                            keyStr = "\(header)"
+                            
+                        } else {
+                            if let keyValue = cborToJson(cborObject: keyPair.key, isKey: true, properIssuerItem: properIssuerItem, decodeIssuerAuth: true)  {
+                                keyStr = "\(keyValue)"
+                            } else {
+                                keyStr = "\(keyPair.key)"
+                            }
+                        }
+                        
                         return [
-                            "algorithm": cborToJson(cborObject: keyPair.key, isKey: false, properIssuerItem: properIssuerItem, decodeIssuerAuth: true),
-                            "keyId": cborToJson(cborObject: keyPair.value, isKey: false, properIssuerItem: properIssuerItem, decodeIssuerAuth: true)
+                            keyStr: cborToJson(cborObject: keyPair.value, isKey: false, properIssuerItem: properIssuerItem, decodeIssuerAuth: true)
                         ]
                     })
                 ,
