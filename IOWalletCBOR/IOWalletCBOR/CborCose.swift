@@ -192,21 +192,32 @@ public class CborCose {
                         keyPair in
                         
                         let keyStr: String
+                        var value: AnyHashable? = cborToJson(cborObject: keyPair.value, isKey: false, properIssuerItem: properIssuerItem, decodeIssuerAuth: true)
                         
                         if let key = keyPair.key.asUInt64(),
                            let header = Cose.CoseHeader.Headers(rawValue: Int(key)) {
                             keyStr = "\(header)"
                             
+                            switch(header) {
+                                case .x5chain, .x5bag:
+                                    //if header is x5chain or x5bag and value is not array transform it to array
+                                    if !(value is [AnyHashable?]) {
+                                        value = [value]
+                                    }
+                                    break
+                                default:
+                                    break
+                            }
                         } else {
+                            //when header is not in the enum map it as the int value
                             if let keyValue = cborToJson(cborObject: keyPair.key, isKey: true, properIssuerItem: properIssuerItem, decodeIssuerAuth: true)  {
                                 keyStr = "\(keyValue)"
                             } else {
                                 keyStr = "\(keyPair.key)"
                             }
                         }
-                        
                         return [
-                            keyStr: cborToJson(cborObject: keyPair.value, isKey: false, properIssuerItem: properIssuerItem, decodeIssuerAuth: true)
+                            keyStr: value
                         ]
                     })
                 ,
