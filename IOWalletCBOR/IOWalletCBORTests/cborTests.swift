@@ -636,6 +636,33 @@ final class cborTests: XCTestCase {
             XCTFail("fail to decode")
             return
         }
+        
+        guard let issuerAuth = issuerSigned["issuerAuth"] as? [String: AnyHashable] else {
+            XCTFail("fail to decode")
+            return
+        }
+        
+        guard let unprotectedHeader = issuerAuth["unprotectedHeader"] as? [AnyHashable] else {
+            XCTFail("fail to decode")
+            return
+        }
+        
+        //check if issuerAuth->unprotectedHeader contains x5chain item.
+        XCTAssertFalse(unprotectedHeader.filter({
+            item in
+            
+            if let header = item as? [String: AnyHashable] {
+                
+                return header.keys.contains(where: {
+                    k in
+                    
+                    return k == "x5chain"
+                })
+            }
+            return false
+            
+        }).isEmpty)
+        
 
         guard let nameSpaces = issuerSigned["nameSpaces"] as? [String: AnyHashable] else {
             XCTFail("fail to decode")

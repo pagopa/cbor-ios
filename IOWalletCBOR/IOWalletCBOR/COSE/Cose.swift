@@ -58,8 +58,21 @@ extension Cose {
   /// Cose header structure defined in https://datatracker.ietf.org/doc/html/rfc8152
   struct CoseHeader {
     enum Headers : Int {
-      case keyId = 4
-      case algorithm = 1
+        
+        //https://datatracker.ietf.org/doc/html/rfc8152 -> Table 2: Common Header Parameters
+        case alg = 1
+        case crit = 2
+        case content_type = 3
+        case kid = 4
+        case iv = 5
+        case partial_iv = 6
+        case counter_signature = 7
+        
+        //https://datatracker.ietf.org/doc/html/rfc9360 -> Table 1: X.509 COSE Header Parameters
+        case x5bag = 32
+        case x5chain = 33
+        case x5t = 34
+        case x5u = 35
     }
     
     let rawHeader : CBOR?
@@ -71,11 +84,11 @@ extension Cose {
     /// - Parameter cbor: CBOR representation of the header
     init?(fromBytestring cbor: CBOR){
       guard let cborMap = cbor.decodeBytestring()?.asMap(),
-            let alg = cborMap[Headers.algorithm]?.asUInt64() else {
+            let alg = cborMap[Headers.alg]?.asUInt64() else {
         self.init(alg: nil, isNegativeAlg: nil, keyId: nil, rawHeader: cbor)
         return
       }
-      self.init(alg: alg, isNegativeAlg: nil, keyId: cborMap[Headers.keyId]?.asBytes(), rawHeader: cbor)
+      self.init(alg: alg, isNegativeAlg: nil, keyId: cborMap[Headers.kid]?.asBytes(), rawHeader: cbor)
     }
     
     init?(alg: UInt64?, isNegativeAlg: Bool?, keyId: [UInt8]?, rawHeader : CBOR? = nil){
@@ -83,7 +96,7 @@ extension Cose {
       self.algorithm = alg
       self.keyId = keyId
       func algCbor() -> CBOR { isNegativeAlg! ? .negativeInt(alg!) : .unsignedInt(alg!) }
-      self.rawHeader = rawHeader ?? .byteString(CBOR.map([.unsignedInt(UInt64(Headers.algorithm.rawValue)) : algCbor()]).encode())
+      self.rawHeader = rawHeader ?? .byteString(CBOR.map([.unsignedInt(UInt64(Headers.alg.rawValue)) : algCbor()]).encode())
     }
   }
 }
