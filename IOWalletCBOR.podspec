@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "IOWalletCBOR"
-  spec.version      = "0.2.0"
+  spec.version      = "0.2.1"
   spec.summary      = "The library offers functions to handle objects in CBOR format and manages COSE signing and verification"
 
   spec.description  = <<-DESC
